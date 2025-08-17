@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Script to create the alx_book_store database in MySQL"""
 
-import MySQLdb
+import mysql.connector
 from sys import argv
 
 
@@ -9,10 +9,10 @@ def create_database():
     """Creates the alx_book_store database"""
     try:
         # Connect to MySQL server (without specifying a database)
-        db = MySQLdb.connect(
+        db = mysql.connector.connect(
             host="localhost",
             user=argv[1],
-            passwd=argv[2],
+            password=argv[2],
             port=3306
         )
 
@@ -24,12 +24,13 @@ def create_database():
 
         print("Database 'alx_book_store' created successfully!")
 
-    except MySQLdb.Error as e:
+    except mysql.connector.Error as e:
         print(f"Error connecting to MySQL: {e}")
 
     finally:
         # Close database connection
-        if 'db' in locals() and db.open:
+        if 'db' in locals() and db.is_connected():
+            cursor.close()
             db.close()
 
 
